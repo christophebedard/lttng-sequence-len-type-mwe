@@ -1,0 +1,19 @@
+LIB_NAME= mytps
+SOURCE_FILES_PREFIX= tp
+SOURCE_FLAGS= -fpic
+LINKED_LIBRARIES= -llttng-ust -ldl
+
+FULL_LIB_NAME= lib${LIB_NAME}
+all: ${FULL_LIB_NAME}
+
+${FULL_LIB_NAME}: ${FULL_LIB_NAME}.so
+
+${FULL_LIB_NAME}.so: ${SOURCE_FILES_PREFIX}
+	gcc -shared -o $@ $^.o ${LINKED_LIBRARIES}
+
+${SOURCE_FILES_PREFIX}: ${SOURCE_FILES_PREFIX}.c ${SOURCE_FILES_PREFIX}.h
+	gcc -I. ${SOURCE_FLAGS} -c $<
+
+clean:
+	rm -f ${FULL_LIB_NAME}.so
+	rm -f ${SOURCE_FILES_PREFIX}.o
